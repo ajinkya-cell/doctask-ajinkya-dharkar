@@ -1,0 +1,15 @@
+====================================================================
+DAO Governance Forum Thread: Proposal 042 Discussion & Delegate Rationale
+====================================================================
+
+Post #1 - @forest_builder (April 11, 2026):
+"Excited to present proposal 042 for 50,000 USDC to build our treehouse HQ!"
+
+Post #2 - @delegate_alice (April 14, 2026):
+"50k upfront is too steep without milestone holdbacks. I urge the author to accept Amendment 042b which caps total spending at 45,000 USDC with 40k initial and 5k held in escrow."
+
+Post #3 - @delegate_bob (April 16, 2026):
+"I am delegating 150,000 votes in favor of Amendment 042b. We only approved this because of the 45,000 USDC contractor discount deal with 5,000 USDC held back until delivery."
+
+Post #4 - @treasury_steward (April 19, 2026):
+"Vote passed for 042b! Treasury executed initial 40,000 USDC disburser transaction on April 20."

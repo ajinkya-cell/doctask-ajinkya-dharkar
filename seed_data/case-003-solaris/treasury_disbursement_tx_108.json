@@ -1,0 +1,13 @@
+{
+  "tx_hash": "0x9e8a71b2234cdfa88200119934bb8821aa00293847e92318df88319f002819bc",
+  "block_number": 19482910,
+  "timestamp": "2026-05-25T14:32:10Z",
+  "dao_id": "solaris-dao",
+  "proposal_id": "DAO-PROP-108",
+  "transaction_type": "INITIAL_DISBURSEMENT",
+  "amount_disbursed": 55000,
+  "currency": "USDC",
+  "recipient_address": "0x42B9A88F11029",
+  "treasury_multisig": "0x1111111111111111111111111111111111111111",
+  "status": "CONFIRMED"
+}

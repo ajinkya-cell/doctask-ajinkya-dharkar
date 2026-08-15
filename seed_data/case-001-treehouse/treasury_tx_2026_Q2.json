@@ -1,0 +1,12 @@
+{
+  "transaction_id": "TX-DAO-2026-0881",
+  "proposal_id": "DAO-PROP-042",
+  "timestamp": "2026-04-20T14:22:00Z",
+  "token_symbol": "USDC",
+  "amount_disbursed": 40000,
+  "recipient_address": "0x71A982C318F923",
+  "disbursement_type": "Initial Grant Tranche",
+  "tx_hash": "0xabc123456789def987654321fedcba0123456789",
+  "status": "CONFIRMED",
+  "notes": "Initial 40,000 USDC payment disbursed under Amendment 042b. 5,000 USDC held in milestone escrow."
+}

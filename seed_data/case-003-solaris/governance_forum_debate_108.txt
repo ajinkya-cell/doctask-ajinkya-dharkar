@@ -1,0 +1,13 @@
+=== DAO GOVERNANCE FORUM DISCOURSE ARCHIVE ===
+Topic: RFC: Budget Cap and Milestone Release for Microgrid Project DAO-PROP-108
+Category: Treasury & Allocations
+Date Range: May 16, 2026 - May 21, 2026
+
+[Post #1] @delegate_alice (Core Contributor):
+"While I fully support the solar microgrid initiative in DAO-PROP-108, spending 75,000 USDC upfront with zero holdback is a severe violation of our treasury risk guidelines. We should cap the total budget at 65,000 USDC and hold back 10,000 USDC until physical inspection."
+
+[Post #2] @solaris_engineer (Author):
+"We negotiated with the solar hardware supplier and they agreed to lower panel pricing by $10,000 if we purchase in bulk. A revised total approved cap of 65,000 USDC works cleanly."
+
+[Post #3] @audit_sentinel (Security Lead):
+"Confirmed. Initial disbursement will be 55,000 USDC, and the final 10,000 USDC holdback will only be released after city electrical grid inspection is signed off."

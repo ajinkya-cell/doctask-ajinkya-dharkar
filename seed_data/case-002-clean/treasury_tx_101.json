@@ -1,0 +1,12 @@
+{
+  "transaction_id": "TX-DAO-2026-0902",
+  "proposal_id": "DAO-PROP-101",
+  "timestamp": "2026-05-05T10:00:00Z",
+  "token_symbol": "USDC",
+  "amount_disbursed": 10000,
+  "recipient_address": "0x333A8899BCC110",
+  "disbursement_type": "Initial Grant Tranche",
+  "tx_hash": "0x111222333444555666777888999aaa",
+  "status": "CONFIRMED",
+  "notes": "Initial 10,000 USDC payment disbursed under Proposal 101. 5,000 USDC held in milestone escrow."
+}
