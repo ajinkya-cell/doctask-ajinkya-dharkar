@@ -1,4 +1,5 @@
 import time
+import re
 from typing import Dict, Any
 from app.graph.state import GraphState
 from app.extraction.classifier import classify_document
@@ -19,9 +20,15 @@ def classify_node(state: GraphState) -> Dict[str, Any]:
         
         # 1. Prompt Injection Pre-Filter (Behavior #8)
         injections = scan_for_prompt_injection(raw_text, filename)
+        
+        # Extract entity / proposal ID from text or fallback to filename
+        prop_match = re.search(r"DAO-PROP-\d+", raw_text, re.IGNORECASE)
+        acc_match = re.search(r"ACC-[A-Z0-9-]+", raw_text, re.IGNORECASE)
+        entity_id = prop_match.group(0).upper() if prop_match else acc_match.group(0).upper() if acc_match else filename
+        
         for inj in injections:
             security_findings.append({
-                "proposal_id": "DAO-PROP-042",
+                "proposal_id": entity_id,
                 "rule_id": inj["rule_id"],
                 "description": inj["description"],
                 "source_doc_id": doc_id,
@@ -111,7 +118,7 @@ def check_rules_node(state: GraphState) -> Dict[str, Any]:
     start_time = time.time()
     all_findings = list(state.get("findings", []))
     
-    # Collect unique proposal IDs
+    # Collect unique proposal / account IDs
     p_ids = list(set([f["proposal_id"] for f in state["extracted_facts"]]))
     if not p_ids:
         p_ids = ["DAO-PROP-042"]
@@ -146,7 +153,7 @@ def check_rules_node(state: GraphState) -> Dict[str, Any]:
 def draft_register_node(state: GraphState) -> Dict[str, Any]:
     start_time = time.time()
     
-    # Assemble Grounded Grant Register
+    # Assemble Grounded Grant Register / Deliverable
     register_rows = {}
     for fact in state["extracted_facts"]:
         p_id = fact["proposal_id"]

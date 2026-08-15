@@ -1,0 +1,13 @@
+=== STREAMPLUS SUBSCRIPTION CONFIRMATION ===
+Subscriber: Alex Miller
+Service: StreamPlus Premium 4K
+Account ID: ACC-STREAM-101
+Date Activated: February 1, 2025
+
+Billing Details:
+- Monthly Subscription Fee: $9.99 / month
+- Billing Cycle: 1st of every month
+- Payment Method: Visa ending in 4022
+- Auto-renew: Active
+
+Thank you for subscribing to StreamPlus!
