@@ -65,13 +65,13 @@ def test_dynamic_jd_and_candidate_matching():
     
     res = score_candidate("CAND-SARAH", cand_facts, [], jd_facts)
     assert res["total_score"] == 100
-    assert res["match_tier"] == "Strong Match"
+    assert res["match_tier"] == "Great Match"
     assert res["breakdown"]["skills_score"] == 50.0
     assert res["breakdown"]["experience_score"] == 40.0
     assert res["breakdown"]["education_and_projects_score"] == 10.0
 
 def test_zero_experience_candidate_on_senior_role_scoring():
-    """Ajinkya (0 yrs corporate experience) applying for 4-year Senior role must score ~60 (Flagged), not 86."""
+    """Ajinkya (0 yrs corporate experience) applying for 4-year Senior role must score ~60 (Moderate Match), not 86."""
     jd_facts = [
         {"field_name": "job_title", "value": "Senior Full-Stack Engineer"},
         {"field_name": "required_skills", "value": "TypeScript, React, Next.js, PostgreSQL, TailwindCSS, Node.js"},
@@ -87,14 +87,14 @@ def test_zero_experience_candidate_on_senior_role_scoring():
     
     res = score_candidate("CAND-AJINKYA", cand_facts, [], jd_facts)
     assert res["total_score"] == 60
-    assert res["match_tier"] == "Flagged"
+    assert res["match_tier"] == "Moderate Match"
     assert res["breakdown"]["skills_score"] == 50.0
     assert res["breakdown"]["experience_score"] == 0.0
     assert res["breakdown"]["education_and_projects_score"] == 10.0
     assert res["breakdown"]["experience_gap_years"] == 4.0
 
 def test_zero_experience_candidate_on_junior_role_scoring():
-    """Ajinkya (0 yrs corporate experience) applying for Junior role (0 min yrs) scores 100 (Strong Match)."""
+    """Ajinkya (0 yrs corporate experience) applying for Junior role (0 min yrs) scores 100 (Great Match)."""
     jd_facts = [
         {"field_name": "job_title", "value": "Junior Full-Stack Developer"},
         {"field_name": "required_skills", "value": "TypeScript, React, Next.js, PostgreSQL"},
@@ -110,7 +110,7 @@ def test_zero_experience_candidate_on_junior_role_scoring():
     
     res = score_candidate("CAND-AJINKYA", cand_facts, [], jd_facts)
     assert res["total_score"] == 100
-    assert res["match_tier"] == "Strong Match"
+    assert res["match_tier"] == "Great Match"
     assert res["breakdown"]["skills_score"] == 50.0
     assert res["breakdown"]["experience_score"] == 40.0
     assert res["breakdown"]["education_and_projects_score"] == 10.0

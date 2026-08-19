@@ -65,7 +65,7 @@ def parse_resume_deep(raw_text: str, filename: str = "") -> dict:
     email = email_match.group(1) if email_match else ""
 
     # 3. Phone Extraction
-    phone_match = re.search(r"(\+?\d{1,3}[-.\s]?(?:\d{5}[-.\s]?\d{5}|\(?\d{3,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}|\d{10,12}))", raw_text)
+    phone_match = re.search(r"(?:Phone:\s*)?((?:\+?\d{1,3}[-.\s]?)?\(?\d{3,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}|\d{10,12})", raw_text, re.IGNORECASE)
     phone = phone_match.group(1).strip() if phone_match else ""
     if re.match(r"^202\d{8,}$", phone): phone = "" # Ignore timestamp strings
 
@@ -121,8 +121,8 @@ def parse_resume_deep(raw_text: str, filename: str = "") -> dict:
     project_headers = [p for p in project_headers if p.lower() not in ["com", "http", "https"]]
     proj_count = len(project_headers)
 
-    # Check for explicit corporate role/experience duration: 'for 5 years', '6 years experience', '3 years'
-    exp_explicit = re.search(r"(?:for\s+)?(\d+(?:\.\d+)?)\s*years?(?:\s*(?:of)?\s*experience)?", work_sec if work_sec else raw_text, re.IGNORECASE)
+    # Check for explicit corporate role/experience duration across full text: '4 years of experience', 'for 5 years', '6 years experience'
+    exp_explicit = re.search(r"(?:for\s+)?(\d+(?:\.\d+)?)\s*years?(?:\s*(?:of)?\s*experience)?", raw_text, re.IGNORECASE)
     
     # Ensure this match is not inside education lines
     is_in_edu = False
@@ -133,18 +133,15 @@ def parse_resume_deep(raw_text: str, filename: str = "") -> dict:
 
     if work_sec and not is_in_edu:
         year_ranges = re.findall(r"(20\d{2})\s*[-–—to]+\s*(20\d{2}|present|current)", work_sec, re.IGNORECASE)
-        if exp_explicit:
+        if exp_explicit and not is_in_edu and float(exp_explicit.group(1)) > 0:
             num_years = float(exp_explicit.group(1))
             final_exp = f"{exp_explicit.group(1)} years"
         elif year_ranges:
             current_year = datetime.datetime.now().year
-            years_calc = 0
-            for start_y, end_y in year_ranges:
-                s = int(start_y)
-                e = current_year if end_y.lower() in ["present", "current"] else int(end_y)
-                diff = max(1, e - s)
-                if diff > years_calc:
-                    years_calc = diff
+            all_starts = [int(s) for s, _ in year_ranges]
+            all_ends = [current_year if e.lower() in ["present", "current"] else int(e) for _, e in year_ranges]
+            total_span = max(all_ends) - min(all_starts)
+            years_calc = max(1, total_span)
             num_years = float(years_calc)
             final_exp = f"{years_calc} years (Company Experience)"
         else:

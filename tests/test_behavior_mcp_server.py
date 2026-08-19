@@ -1,4 +1,7 @@
-import pytest
+try:
+    import pytest
+except ImportError:
+    pytest = None  # type: ignore
 from app.mcp.server import (
     configure_job_description,
     upload_candidate_document,
