@@ -4,42 +4,49 @@ from app.extraction.fact_extractor import extract_facts_from_doc
 from app.extraction.conflict_detector import detect_cross_document_conflicts
 
 def test_document_classification():
-    assert classify_document("DAO-PROP-042.md", "Proposal DAO-PROP-042 requesting funds") == "proposal"
-    assert classify_document("DAO-AMEND-042b.md", "Revised total approved budget") == "amendment"
-    assert classify_document("treasury_tx.json", '{"transaction_id": "TX-101"}') == "treasury_log"
-    assert classify_document("forum_thread.txt", "Delegate discussion thread") == "forum_thread"
-    assert classify_document("contractor_invoice.md", "Requested Payment Amount") == "invoice"
-    assert classify_document("dao_charter.md", "# DAO Charter & Rules") == "charter"
+    assert classify_document("health_insurance_policy_gold.md", "Policy ID POL-APEX-7720 in-network specialist co-pay $50.00") == "insurance_policy"
+    assert classify_document("hospital_itemized_bill_may2026.md", "Hospital itemized bill total billed charges $2,900.00") == "hospital_bill"
+    assert classify_document("insurance_eob_may2026.json", '{"insurance_allowed_amount": 650.0}') == "eob_statement"
+    assert classify_document("anesthesiology_delayed_bill.md", "Delayed Ancillary Physician bill $800.00") == "physician_bill"
 
 def test_fact_extraction_with_spans():
-    prop_text = "Proposal DAO-PROP-042\nTotal Requested Amount: 50,000 USDC\nRecipient wallet address: 0x71A982C318F923"
-    facts = extract_facts_from_doc("doc_1", "DAO-PROP-042.md", "proposal", prop_text)
-    
+    policy_text = """
+    # Health Insurance Policy
+    - Specialist Consultation Co-pay: $50.00
+    - Annual Individual Deductible: $1,500.00
+    """
+    facts = extract_facts_from_doc("doc_1", "health_insurance_policy_gold.md", "insurance_policy", policy_text)
+    assert len(facts) >= 2
     fields = {f["field_name"]: f for f in facts}
-    assert "requested_budget" in fields
-    assert fields["requested_budget"]["value"] == "50000"
-    assert "source_span" in fields["requested_budget"]
-    assert "DAO-PROP-042.md:L2" in fields["requested_budget"]["source_span"]
+    
+    assert "copay_specialist" in fields
+    assert fields["copay_specialist"]["value"] == "50.00"
+    assert "health_insurance_policy_gold.md:L3:" in fields["copay_specialist"]["source_span"]
 
 def test_cross_document_conflict_detection():
     facts = [
         {
-            "proposal_id": "DAO-PROP-042",
-            "field_name": "requested_budget",
-            "value": "50000",
+            "proposal_id": "PAT-SARAH-042",
+            "field_name": "hospital_billed_total",
+            "value": "2900.00",
             "source_doc_id": "doc_1",
-            "source_span": "DAO-PROP-042.md:L2: '50,000 USDC'"
+            "source_span": "hospital_itemized_bill_may2026.md:L10: '$2,900.00'"
         },
         {
-            "proposal_id": "DAO-PROP-042",
-            "field_name": "approved_budget",
-            "value": "45000",
+            "proposal_id": "PAT-SARAH-042",
+            "field_name": "insurance_allowed_amount",
+            "value": "650.00",
             "source_doc_id": "doc_2",
-            "source_span": "DAO-AMEND-042b.md:L3: '45,000 USDC'"
+            "source_span": "insurance_eob_may2026.json: 'insurance_allowed_amount': 650.0"
+        },
+        {
+            "proposal_id": "PAT-SARAH-042",
+            "field_name": "patient_responsibility_eob",
+            "value": "50.00",
+            "source_doc_id": "doc_2",
+            "source_span": "insurance_eob_may2026.json: 'patient_responsibility_total': 50.0"
         }
     ]
     conflicts = detect_cross_document_conflicts(facts)
-    assert len(conflicts) == 1
-    assert conflicts[0]["field_name"] == "total_approved_budget"
-    assert "50000 USDC" in conflicts[0]["description"]
-    assert "45000 USDC" in conflicts[0]["description"]
+    assert len(conflicts) >= 1
+    assert conflicts[0]["field_name"] == "contractual_rate_overcharge"

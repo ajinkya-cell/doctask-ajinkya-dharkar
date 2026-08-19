@@ -12,7 +12,7 @@ async def export_deliverable(run_id: str):
     
     return {
         "run_id": run_id,
-        "deliverable_type": "DAO Grant Register & Governance Audit Report",
+        "deliverable_type": "Medical Bill & Health Insurance Reconciliation Certificate",
         "register": state.get("register_draft", {}),
         "conflicts": state.get("conflicts", []),
         "findings": state.get("findings", []),

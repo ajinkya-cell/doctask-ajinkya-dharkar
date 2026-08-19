@@ -1,46 +1,39 @@
 import pytest
 from app.rules.checks import evaluate_compliance_rules
 
-def test_rule_5_1_initial_payout_threshold():
+def test_rule_2_3_specialist_copay_cap():
     facts = [
         {
-            "proposal_id": "DAO-PROP-042",
-            "field_name": "approved_budget",
-            "value": "45000",
-            "source_doc_id": "doc_amend",
-            "source_span": "DAO-AMEND-042b.md:L3"
+            "proposal_id": "PAT-SARAH-042",
+            "field_name": "copay_specialist",
+            "value": "50.00",
+            "source_doc_id": "doc_policy",
+            "source_span": "health_insurance_policy_gold.md:L10"
         },
         {
-            "proposal_id": "DAO-PROP-042",
-            "field_name": "initial_payout",
-            "value": "40000",  # 40000 / 45000 = 88.9% > 85% threshold
-            "source_doc_id": "doc_amend",
-            "source_span": "DAO-AMEND-042b.md:L4"
+            "proposal_id": "PAT-SARAH-042",
+            "field_name": "copay_specialist_charged",
+            "value": "150.00",
+            "source_doc_id": "doc_bill",
+            "source_span": "hospital_itemized_bill_may2026.md:L9: '$150.00'"
         }
     ]
-    findings = evaluate_compliance_rules("DAO-PROP-042", facts, [], [])
-    rule_5_1_findings = [f for f in findings if f["rule_id"] == "5.1"]
-    assert len(rule_5_1_findings) == 1
-    assert "exceeding the 85% maximum threshold" in rule_5_1_findings[0]["description"]
+    findings = evaluate_compliance_rules("PAT-SARAH-042", facts, [], [])
+    rule_2_3_findings = [f for f in findings if f["rule_id"] == "2.3"]
+    assert len(rule_2_3_findings) == 1
+    assert "Rule 2.3 Violation" in rule_2_3_findings[0]["description"]
 
-def test_rule_5_3_disbursement_overrun():
+def test_rule_3_1_no_surprises_act_balance_billing():
     facts = [
         {
-            "proposal_id": "DAO-PROP-042",
-            "field_name": "approved_budget",
-            "value": "45000",
-            "source_doc_id": "doc_amend",
-            "source_span": "DAO-AMEND-042b.md:L3"
-        },
-        {
-            "proposal_id": "DAO-PROP-042",
-            "field_name": "disbursed_amount",
-            "value": "48000",  # 48,000 > 45,000 approved budget
-            "source_doc_id": "doc_tx",
-            "source_span": "treasury_tx.json:L5"
+            "proposal_id": "PAT-CHANG-884",
+            "field_name": "balance_bill_amount",
+            "value": "1800.00",
+            "source_doc_id": "doc_oon",
+            "source_span": "out_of_network_physician_balance_bill.md:L9: '$1,800.00'"
         }
     ]
-    findings = evaluate_compliance_rules("DAO-PROP-042", facts, [], [])
-    rule_5_3_findings = [f for f in findings if f["rule_id"] == "5.3"]
-    assert len(rule_5_3_findings) == 1
-    assert "exceeds approved budget cap" in rule_5_3_findings[0]["description"]
+    findings = evaluate_compliance_rules("PAT-CHANG-884", facts, [], [])
+    rule_3_1_findings = [f for f in findings if f["rule_id"] == "3.1"]
+    assert len(rule_3_1_findings) == 1
+    assert "No Surprises Act" in rule_3_1_findings[0]["description"]

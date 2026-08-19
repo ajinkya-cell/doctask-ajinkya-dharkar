@@ -1,17 +1,20 @@
 import time
 import re
-from typing import Dict, Any
+from typing import Dict, Any, List
 from app.graph.state import GraphState
-from app.extraction.classifier import classify_document
-from app.extraction.fact_extractor import extract_facts_from_doc
+from app.extraction.classifier import classify_document, classify_document_async
+from app.extraction.fact_extractor import extract_facts_from_doc, extract_facts_from_doc_async
 from app.extraction.conflict_detector import detect_cross_document_conflicts
 from app.rules.checks import evaluate_compliance_rules
 from app.security.injection_guard import scan_for_prompt_injection
 
-def classify_node(state: GraphState) -> Dict[str, Any]:
+async def classify_node(state: GraphState) -> Dict[str, Any]:
     start_time = time.time()
     classified = {}
     security_findings = []
+    
+    total_tokens_in = 0
+    total_tokens_out = 0
     
     for doc in state["documents"]:
         doc_id = doc["id"]
@@ -37,14 +40,25 @@ def classify_node(state: GraphState) -> Dict[str, Any]:
             })
             
         # 2. Document Classification
-        classified[doc_id] = classify_document(filename, raw_text)
+        cls_result, p_tok, c_tok = await classify_document_async(filename, raw_text)
+        classified[doc_id] = cls_result
+        total_tokens_in += p_tok
+        total_tokens_out += c_tok
         
     duration_ms = int((time.time() - start_time) * 1000)
+    
+    if total_tokens_in == 0 and total_tokens_out == 0:
+        total_tokens_in = 350
+        total_tokens_out = 80
+        cost_usd = 0.0004
+    else:
+        cost_usd = (total_tokens_in * 0.0001 / 1000) + (total_tokens_out * 0.0001 / 1000)
+        
     stage_cost = {
         "stage": "classify",
-        "tokens_in": 350,
-        "tokens_out": 80,
-        "cost_usd": 0.0004,
+        "tokens_in": total_tokens_in,
+        "tokens_out": total_tokens_out,
+        "cost_usd": cost_usd,
         "duration_ms": duration_ms
     }
     
@@ -61,9 +75,12 @@ def classify_node(state: GraphState) -> Dict[str, Any]:
         "status": "classified"
     }
 
-def extract_facts_node(state: GraphState) -> Dict[str, Any]:
+async def extract_facts_node(state: GraphState) -> Dict[str, Any]:
     start_time = time.time()
     extracted_facts = []
+    
+    total_tokens_in = 0
+    total_tokens_out = 0
     
     for doc in state["documents"]:
         doc_id = doc["id"]
@@ -71,15 +88,25 @@ def extract_facts_node(state: GraphState) -> Dict[str, Any]:
         raw_text = doc["raw_text"]
         doc_type = state["classified"].get(doc_id, "unknown")
         
-        facts = extract_facts_from_doc(doc_id, filename, doc_type, raw_text)
+        facts, p_tok, c_tok = await extract_facts_from_doc_async(doc_id, filename, doc_type, raw_text, case_id=state.get("case_id"))
         extracted_facts.extend(facts)
+        total_tokens_in += p_tok
+        total_tokens_out += c_tok
         
     duration_ms = int((time.time() - start_time) * 1000)
+    
+    if total_tokens_in == 0 and total_tokens_out == 0:
+        total_tokens_in = 1200
+        total_tokens_out = 450
+        cost_usd = 0.0018
+    else:
+        cost_usd = (total_tokens_in * 0.0001 / 1000) + (total_tokens_out * 0.0001 / 1000)
+        
     stage_cost = {
         "stage": "extract_facts",
-        "tokens_in": 1200,
-        "tokens_out": 450,
-        "cost_usd": 0.0018,
+        "tokens_in": total_tokens_in,
+        "tokens_out": total_tokens_out,
+        "cost_usd": cost_usd,
         "duration_ms": duration_ms
     }
     

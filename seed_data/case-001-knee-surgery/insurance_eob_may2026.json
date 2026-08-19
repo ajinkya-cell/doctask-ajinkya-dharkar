@@ -1,0 +1,14 @@
+{
+  "claim_id": "CLM-APEX-2026-9921",
+  "patient_id": "PAT-SARAH-042",
+  "patient_name": "Sarah Jenkins",
+  "service_date": "2026-05-12",
+  "provider": "St. Jude Memorial Hospital",
+  "total_billed_charges": 2900.0,
+  "insurance_allowed_amount": 650.0,
+  "plan_paid_amount": 600.0,
+  "contractual_discount_adjustment": 2250.0,
+  "copay_specialist_owed": 50.0,
+  "patient_responsibility_total": 50.0,
+  "claim_status": "PROCESSED_IN_NETWORK"
+}

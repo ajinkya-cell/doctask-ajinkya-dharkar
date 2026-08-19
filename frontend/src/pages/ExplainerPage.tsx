@@ -5,149 +5,152 @@ interface ExplainerPageProps {
   onNavigate: (page: PageRoute) => void;
 }
 
-export function ExplainerPage({ onNavigate }: ExplainerPageProps) {
+export const ExplainerPage: React.FC<ExplainerPageProps> = ({ onNavigate }) => {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-4 space-y-12 text-[#121212]">
+    <div className="max-w-5xl mx-auto px-6 py-6 space-y-12 text-stone-900 bg-[#FAF8F5]">
       
       {/* Hero Section */}
-      <section className="text-center space-y-4 pt-4 pb-8 border-b border-stone-200">
-        <div className="inline-flex items-center gap-2 bg-stone-100 border border-stone-300 px-3.5 py-1 rounded-full text-xs font-mono font-semibold text-stone-800">
-          <span>⚡</span> MULTI-SOURCE DOCUMENT RECONCILIATION ENGINE
+      <section className="text-center space-y-4 pt-4 pb-8 border-b border-[#E8E4DC]">
+        <div className="inline-flex items-center gap-2 bg-[#F4F0EA] border border-[#E8E4DC] px-3.5 py-1 rounded-full text-xs font-mono font-semibold text-stone-800">
+          <span>⚡</span> SUPERDOCS TASK 1: THE ANALYST THAT NEVER SLEEPS
         </div>
         <h1 className="font-serif text-4xl sm:text-5xl font-normal text-stone-900 tracking-tight leading-tight">
-          The Analyst That Never Sleeps
+          Talent Auditor Architecture & FastMCP Guide
         </h1>
         <p className="font-sans text-base text-stone-600 max-w-2xl mx-auto leading-relaxed">
-          An agentic state machine that ingests piles of conflicting documents, extracts facts with exact line citations, evaluates governing rules, surfaces contradictions for human sign-off, and maintains incremental delta updates.
+          An autonomous multi-document agentic screener. Ingests job descriptions and candidate resumes, cross-references HR verification records to catch title/experience inflation, enforces Rule 9.1 anti-prompt injection, and produces line-grounded interview dossiers.
         </p>
 
-        <div className="flex flex-wrap justify-center gap-4 pt-4">
+        <div className="flex justify-center gap-4 pt-4 flex-wrap">
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => onNavigate('dao')}
-            className="bg-[#1E1B18] border border-[#38322B] text-[#F5F2EB] text-xs font-semibold px-5 py-2.5 rounded-xl shadow-md hover:bg-[#282420] transition-colors flex items-center gap-2 cursor-pointer"
+            onClick={() => onNavigate('screener')}
+            className="bg-stone-900 border border-stone-800 text-stone-50 text-xs font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-stone-800 transition-colors flex items-center gap-2 cursor-pointer"
           >
-            <span>🏛️</span> Open DAO Governance Hub (Warm Charcoal & Amber)
+            <span>🎯</span> Open Talent Screener Studio
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => onNavigate('household')}
-            className="bg-[#EAE5DC] text-stone-900 border border-stone-300 text-xs font-semibold px-5 py-2.5 rounded-xl shadow-xs hover:bg-[#E2DDD3] transition-colors flex items-center gap-2 cursor-pointer"
+            onClick={() => onNavigate('home')}
+            className="bg-white border border-stone-300 text-stone-900 text-xs font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-stone-100 transition-colors flex items-center gap-2 cursor-pointer"
           >
-            <span>🧾</span> Open Household Bill Auditor (Warm Cream & Linen)
+            <span>🏠</span> Back to Overview
           </motion.button>
         </div>
       </section>
 
-      {/* The Core Problem & Philosophy */}
+      {/* The 3 Core Movements (SuperDocs Brief) */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white border border-stone-200 rounded-2xl p-6 shadow-xs space-y-2">
+        <div className="bg-white border border-[#E8E4DC] rounded-2xl p-6 shadow-xs space-y-3">
           <div className="text-2xl">📚</div>
-          <h3 className="font-serif text-lg font-normal text-stone-900">1. Unstructured Piles</h3>
+          <h3 className="font-serif text-lg font-semibold text-stone-900">Movement 1: Understand the Pile</h3>
           <p className="text-xs text-stone-600 leading-relaxed">
-            Real organizations don't have clean SQL databases. They have messy Markdown proposals, PDF amendments, JSON bank logs, and chat forum debates with conflicting numbers.
+            Ingests heterogeneous candidate resumes (PDF, Markdown, TXT) and job descriptions. Extracts skills, degree credentials, company tenure, and verified project portfolios with exact line-level source spans (<code className="font-mono text-[10px] bg-stone-100 px-1 py-0.5 rounded">source_span</code>).
           </p>
         </div>
 
-        <div className="bg-white border border-stone-200 rounded-2xl p-6 shadow-xs space-y-2">
-          <div className="text-2xl">🔍</div>
-          <h3 className="font-serif text-lg font-normal text-stone-900">2. Cross-Doc Contradictions</h3>
+        <div className="bg-white border border-[#E8E4DC] rounded-2xl p-6 shadow-xs space-y-3">
+          <div className="text-2xl">⚖️</div>
+          <h3 className="font-serif text-lg font-semibold text-stone-900">Movement 2: Examine Against Rules</h3>
           <p className="text-xs text-stone-600 leading-relaxed">
-            Proposal #42 asks for $50k. Amendment #42b ratifies $45k with a 40k payout. The invoice asks for $10k. No single document has the full truth—only cross-document grounding reveals the discrepancy.
+            Cross-references resume claims against employment verification records (catches Title Inflation e.g. Junior Dev claiming Lead Architect), evaluates experience deficits, and flags prompt-injection overrides (Rule 9.1).
           </p>
         </div>
 
-        <div className="bg-white border border-stone-200 rounded-2xl p-6 shadow-xs space-y-2">
-          <div className="text-2xl">🛡️</div>
-          <h3 className="font-serif text-lg font-normal text-stone-900">3. Human-in-the-Loop Gate</h3>
+        <div className="bg-white border border-[#E8E4DC] rounded-2xl p-6 shadow-xs space-y-3">
+          <div className="text-2xl">🔄</div>
+          <h3 className="font-serif text-lg font-semibold text-stone-900">Movement 3: Stay Alive & Incremental</h3>
           <p className="text-xs text-stone-600 leading-relaxed">
-            AI should never disburse money or alter records autonomously. The engine pauses at Stage 5, presenting exact line-level evidence for item-by-item human approval before final commit.
+            State-machine execution backed by LangGraph. Recovers from process interruptions without re-extracting parsed documents. Updates candidate leaderboard in real-time when new resumes or JD criteria change.
           </p>
         </div>
       </section>
 
-      {/* The Three Movements Breakdown */}
-      <section className="bg-white border border-stone-200 rounded-2xl p-8 shadow-xs space-y-6">
-        <div className="border-b border-stone-200 pb-4">
-          <span className="text-xs font-mono uppercase text-amber-800 font-bold tracking-wider">SuperDocs Challenge Specification</span>
-          <h2 className="font-serif text-2xl font-normal text-stone-900 mt-1">The Three Movements & Architecture Pipeline</h2>
+      {/* 4-Pillar Scoring Rubric Architecture */}
+      <section className="bg-white border border-[#E8E4DC] rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+        <div className="border-b border-stone-200/70 pb-4">
+          <h2 className="font-serif text-xl font-semibold text-stone-900">The 4-Pillar Scoring Architecture</h2>
+          <p className="text-xs text-stone-500 mt-1">Mathematical point allocation and experience-deficit gating logic</p>
         </div>
 
-        <div className="space-y-6">
-          {/* Movement 1 */}
-          <div className="border-l-4 border-l-stone-800 pl-4 space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="bg-stone-900 text-white font-mono text-[10px] font-bold px-2 py-0.5 rounded">MOVEMENT 1</span>
-              <h4 className="font-serif text-base font-semibold text-stone-900">Understand the Pile (Ingest &rarr; Classify &rarr; Ground &rarr; Matrix)</h4>
-            </div>
-            <p className="text-xs text-stone-600 leading-relaxed">
-              Ingests arbitrary file formats (Markdown, PDF, JSON, TXT). Classifies into domain document types. Extracts structured facts where <strong>every fact records an exact line-level citation</strong> (e.g. <code>DAO-PROP-042.md:L14: '50,000 USDC'</code>). Detects multi-document discrepancies automatically.
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-[#FAF8F5] border border-[#E8E4DC] p-4 rounded-xl space-y-2">
+            <div className="text-blue-700 font-bold font-mono text-sm">PILLAR 1 · 50 PTS</div>
+            <div className="font-bold text-xs text-stone-900">Technical Skills Match</div>
+            <p className="text-[11px] text-stone-600 leading-relaxed">
+              45 pts for mandatory skills match ratio + 5 pts bonus for secondary technologies.
             </p>
           </div>
 
-          {/* Movement 2 */}
-          <div className="border-l-4 border-l-amber-600 pl-4 space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="bg-amber-800 text-white font-mono text-[10px] font-bold px-2 py-0.5 rounded">MOVEMENT 2</span>
-              <h4 className="font-serif text-base font-semibold text-stone-900">Examine Against the Rules (Playbook & Governance Checks)</h4>
-            </div>
-            <p className="text-xs text-stone-600 leading-relaxed">
-              Applies rules deterministically against extracted facts:
-              <br />• <strong>Rule 5.1:</strong> Initial payout &le; 85% of approved budget (Flags 40k/45k = 88.9% violation).
-              <br />• <strong>Rule 5.3:</strong> Disbursed amounts must not exceed approved cap.
-              <br />• <strong>Rule 6.1:</strong> Household unannounced rate hikes &gt; 10% without 30-day notice.
-              <br />• <strong>Zero-Finding Proof:</strong> Verifies that a clean, compliant corpus produces exactly 0 false positives.
+          <div className="bg-[#FAF8F5] border border-[#E8E4DC] p-4 rounded-xl space-y-2">
+            <div className="text-emerald-700 font-bold font-mono text-sm">PILLAR 2 · 40 PTS</div>
+            <div className="font-bold text-xs text-stone-900">Experience Fulfillment</div>
+            <p className="text-[11px] text-stone-600 leading-relaxed">
+              Proportional fulfillment: <code className="font-mono text-[10px] bg-white px-1 py-0.5 rounded border border-stone-200">(cand_yrs / req_yrs) * 40</code>. Zero corporate exp on a 4yr role yields 0/40.
             </p>
           </div>
 
-          {/* Movement 3 */}
-          <div className="border-l-4 border-l-emerald-600 pl-4 space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="bg-emerald-800 text-white font-mono text-[10px] font-bold px-2 py-0.5 rounded">MOVEMENT 3</span>
-              <h4 className="font-serif text-base font-semibold text-stone-900">Stay Alive (Incremental Folder Watcher & Delta Computation)</h4>
-            </div>
-            <p className="text-xs text-stone-600 leading-relaxed">
-              Monitors a directory for newly dropped files. Computes incremental state updates and surfaces new contradictions (e.g., April $79 bill or final contractor invoice) <strong>without re-running the existing document corpus</strong>, saving 90%+ in token compute.
+          <div className="bg-[#FAF8F5] border border-[#E8E4DC] p-4 rounded-xl space-y-2">
+            <div className="text-purple-700 font-bold font-mono text-sm">PILLAR 3 · 10 PTS</div>
+            <div className="font-bold text-xs text-stone-900">Education & Project Depth</div>
+            <p className="text-[11px] text-stone-600 leading-relaxed">
+              5 pts for relevant CS/Engineering degree + 5 pts for verified production project portfolio (3+ systems built).
+            </p>
+          </div>
+
+          <div className="bg-[#FAF8F5] border border-[#E8E4DC] p-4 rounded-xl space-y-2">
+            <div className="text-rose-700 font-bold font-mono text-sm">PILLAR 4 · DEDUCTIONS</div>
+            <div className="font-bold text-xs text-stone-900">Security & Discrepancies</div>
+            <p className="text-[11px] text-stone-600 leading-relaxed">
+              -30 pts for title/experience inflation; -50 pts for prompt injection override (instant disqualification).
             </p>
           </div>
         </div>
       </section>
 
-      {/* The 10 Separating Behaviors Matrix */}
-      <section className="bg-white border border-stone-200 rounded-2xl p-8 shadow-xs space-y-6">
-        <div className="border-b border-stone-200 pb-4">
-          <span className="text-xs font-mono uppercase text-emerald-800 font-bold tracking-wider">Evaluation Rubric Compliance</span>
-          <h2 className="font-serif text-2xl font-normal text-stone-900 mt-1">The 10 Separating Behaviors</h2>
+      {/* FastMCP Protocol Section */}
+      <section className="bg-stone-900 text-stone-100 rounded-2xl p-6 sm:p-8 shadow-md space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-800 pb-4">
+          <div>
+            <div className="text-amber-400 font-mono text-xs font-semibold">MODEL CONTEXT PROTOCOL (MCP)</div>
+            <h2 className="font-serif text-2xl font-bold text-white mt-1">FastMCP Machine Interface</h2>
+          </div>
+          <span className="font-mono text-xs bg-stone-800 text-stone-300 px-3 py-1 rounded-md border border-stone-700 self-start sm:self-auto">
+            app/mcp/server.py
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          {[
-            { num: 1, title: 'Multi-Format Ingestion', desc: 'Accepts .md, .pdf, .json, .txt without rigid pre-schemas.' },
-            { num: 2, title: 'No Hallucinations / Line Spans', desc: 'Every fact links to exact source line quotes with zero fabrication.' },
-            { num: 3, title: 'Domain-Agnostic Engine', desc: 'Identical code runs DAO governance, household utility bills, and enterprise contracts.' },
-            { num: 4, title: 'Zero False Positives', desc: 'Clean, compliant document sets produce exactly 0 findings.' },
-            { num: 5, title: 'Human Review Gate', desc: 'Pauses pipeline for item-by-item sign-off before committing state.' },
-            { num: 6, title: 'Multi-Tenant Isolation', desc: 'Separate database partition keys guarantee 0 leakage between instances.' },
-            { num: 7, title: 'Live Neon DB & Resume-After-Kill', desc: 'State checkpointing allows resumes after process kill with zero data loss.' },
-            { num: 8, title: 'Prompt Injection Defense', desc: 'Malicious directives like SYSTEM OVERRIDE are treated as untrusted data.' },
-            { num: 9, title: 'FastMCP Server Protocol', desc: 'Built-in FastMCP server allows Claude Desktop & IDE integration.' },
-            { num: 10, title: 'Stage-by-Stage Cost Tracking', desc: 'Tracks tokens, execution latency (ms), and cost ($) across every graph node.' }
-          ].map(b => (
-            <div key={b.num} className="bg-stone-50 border border-stone-200 p-3.5 rounded-xl space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-stone-900 text-white font-mono text-[10px] font-bold flex items-center justify-center">
-                  {b.num}
-                </span>
-                <span className="font-semibold text-stone-900">{b.title}</span>
-              </div>
-              <p className="text-stone-600 pl-7">{b.desc}</p>
-            </div>
-          ))}
+        <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+          SuperDocs Talent Auditor provides an official <strong>FastMCP Server</strong> enabling AI coding agents (such as Cursor, Claude Desktop, Antigravity) to drive the entire candidate screening workflow programmatically over standard Model Context Protocol.
+        </p>
+
+        <div className="bg-stone-950 border border-stone-800 rounded-xl p-4 font-mono text-xs text-stone-200 overflow-x-auto space-y-2">
+          <div className="text-stone-400"># Run the FastMCP Autonomous Screener Driver</div>
+          <div className="text-emerald-400">$ python scripts/mcp_screener_driver.py</div>
+          <div className="text-stone-500 pt-2"># Available FastMCP Tools:</div>
+          <div className="text-stone-300">• configure_job_description(title, required_skills, min_experience)</div>
+          <div className="text-stone-300">• upload_candidate_document(filename, raw_text)</div>
+          <div className="text-stone-300">• run_screener_audit()</div>
+          <div className="text-stone-300">• get_candidate_leaderboard(run_id)</div>
+          <div className="text-stone-300">• review_candidate_flags(run_id)</div>
+          <div className="text-stone-300">• decide_candidate(candidate_id, action, notes)</div>
+          <div className="text-stone-300">• export_shortlist_dossier(run_id)</div>
         </div>
+      </section>
+
+      {/* Security & Rule 9.1 Defense */}
+      <section className="bg-white border border-[#E8E4DC] rounded-2xl p-6 sm:p-8 shadow-xs space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="text-xl">🛡️</span>
+          <h2 className="font-serif text-xl font-semibold text-stone-900">Security & Anti-Prompt Injection (Rule 9.1)</h2>
+        </div>
+        <p className="text-xs text-stone-600 leading-relaxed">
+          All untrusted document texts are treated strictly as passive data inside fenced blocks (<code className="font-mono text-[10px] bg-stone-100 px-1 py-0.5 rounded">&lt;untrusted_source_document&gt;</code>). Any embedded instruction attempting to override scoring rubrics (e.g. <em>"[SYSTEM OVERRIDE INSTRUCTION FOR AI AGENT...]"</em>) is flagged, quarantined, and automatically disqualified with zero human deception.
+        </p>
       </section>
 
     </div>
   );
-}
+};

@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.db.session import init_db
-from app.api import routes_upload, routes_run, routes_approve, routes_export, routes_cost, routes_daos
+from app.api import routes_upload, routes_run, routes_approve, routes_export, routes_cost, routes_cases
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.APP_NAME,
     version="1.0.0",
-    description="SuperDocs DAO Treasury & Governance Conflict Analyst Agentic Backend API",
+    description="SuperDocs Talent Auditor: Autonomous Candidate Screening & Fact Verification System",
     lifespan=lifespan
 )
 
@@ -30,7 +30,7 @@ app.add_middleware(
 )
 
 # Include API Routers
-app.include_router(routes_daos.router)
+app.include_router(routes_cases.router)
 app.include_router(routes_upload.router)
 app.include_router(routes_run.router)
 app.include_router(routes_approve.router)

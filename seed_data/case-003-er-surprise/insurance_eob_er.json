@@ -1,0 +1,13 @@
+{
+  "claim_id": "CLM-UNITED-2026-884",
+  "patient_id": "PAT-CHANG-884",
+  "patient_name": "Michael Chang",
+  "service_date": "2026-06-05",
+  "provider": "Metro Valley Hospital",
+  "total_billed_charges": 3000.0,
+  "insurance_allowed_amount": 1400.0,
+  "plan_paid_amount": 1150.0,
+  "copay_er_owed": 250.0,
+  "patient_responsibility_total": 250.0,
+  "claim_status": "PROCESSED_EMERGENCY_IN_NETWORK"
+}

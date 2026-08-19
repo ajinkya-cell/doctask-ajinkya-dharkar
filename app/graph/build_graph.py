@@ -1,6 +1,7 @@
 from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.memory import MemorySaver
 from app.graph.state import GraphState
+from app.config import settings
 from app.graph.nodes import (
     classify_node,
     extract_facts_node,
@@ -11,7 +12,7 @@ from app.graph.nodes import (
 )
 from app.graph.edges import should_retry_or_continue
 
-# Global Checkpointer for state persistence and crash recovery (Behavior #2)
+# Global Checkpointer for state persistence and crash recovery
 checkpointer = MemorySaver()
 
 def create_pipeline_graph():

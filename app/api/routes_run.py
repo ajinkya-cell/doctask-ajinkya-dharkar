@@ -5,13 +5,14 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.db.session import get_db
-from app.db.models import DocumentModel, RunModel
+from app.db.models import DocumentModel, RunModel, PatientCaseModel
 from app.graph.build_graph import pipeline_graph
 
-router = APIRouter(prefix="/runs", tags=["Runs"])
+router = APIRouter(prefix="/runs", tags=["Pipeline Runs"])
 
 class RunCreateRequest(BaseModel):
-    dao_id: Optional[str] = "treehouse-dao"
+    case_id: Optional[str] = None
+    dao_id: Optional[str] = None
     document_ids: Optional[List[str]] = None
     thread_id: Optional[str] = None
 
@@ -23,17 +24,29 @@ async def create_run(
     req: RunCreateRequest,
     db: AsyncSession = Depends(get_db)
 ):
-    dao_id = req.dao_id or "treehouse-dao"
+    target_case_id = req.case_id or req.dao_id or "case-001-knee-surgery"
     
-    # Fetch documents from DB for this DAO instance
-    query = select(DocumentModel).where(DocumentModel.dao_id == dao_id)
+    # Infer target domain from case record or case identifier prefix
+    case = await db.get(PatientCaseModel, target_case_id)
+    target_domain = getattr(case, "domain", None) if case else None
+    if not target_domain:
+        tid = target_case_id.lower()
+        if "dao" in tid or "treehouse" in tid or "solaris" in tid:
+            target_domain = "dao"
+        elif "job" in tid or "cand" in tid or "talent" in tid:
+            target_domain = "talent"
+        else:
+            target_domain = "medical"
+    
+    # Fetch documents from DB for this case instance
+    query = select(DocumentModel).where(DocumentModel.case_id == target_case_id)
     if req.document_ids:
         query = query.where(DocumentModel.id.in_(req.document_ids))
     result = await db.execute(query)
     docs = result.scalars().all()
     
     if not docs:
-        raise HTTPException(status_code=400, detail=f"No documents found for DAO instance '{dao_id}'. Please upload documents first.")
+        raise HTTPException(status_code=400, detail=f"No documents found for case '{target_case_id}'. Please upload documents first.")
         
     doc_dicts = [
         {"id": d.id, "filename": d.filename, "raw_text": d.raw_text, "sha256": d.sha256}
@@ -41,11 +54,13 @@ async def create_run(
     ]
     
     run_id = str(uuid.uuid4())
-    thread_id = req.thread_id or f"thread_{dao_id}_{uuid.uuid4()}"
+    thread_id = req.thread_id or f"thread_{target_case_id}_{uuid.uuid4()}"
     
     initial_state = {
         "run_id": run_id,
         "thread_id": thread_id,
+        "case_id": target_case_id,
+        "domain": target_domain,
         "documents": doc_dicts,
         "classified": {},
         "extracted_facts": [],
@@ -63,13 +78,14 @@ async def create_run(
     
     # Execute graph
     final_state = await pipeline_graph.ainvoke(initial_state, config)
-    final_state["dao_id"] = dao_id
+    final_state["case_id"] = target_case_id
+    final_state["dao_id"] = target_case_id
     active_runs_state[run_id] = final_state
     
     # Save run to DB
     run_record = RunModel(
         id=run_id,
-        dao_id=dao_id,
+        case_id=target_case_id,
         thread_id=thread_id,
         status=final_state.get("status", "completed")
     )
@@ -78,7 +94,8 @@ async def create_run(
     
     return {
         "run_id": run_id,
-        "dao_id": dao_id,
+        "case_id": target_case_id,
+        "dao_id": target_case_id,
         "thread_id": thread_id,
         "status": final_state.get("status"),
         "pending_approvals_count": len(final_state.get("pending_approvals", [])),
@@ -93,7 +110,8 @@ async def get_run_status(run_id: str):
     state = active_runs_state[run_id]
     return {
         "run_id": run_id,
-        "dao_id": state.get("dao_id", "treehouse-dao"),
+        "case_id": state.get("case_id", "case-001-knee-surgery"),
+        "dao_id": state.get("dao_id", "case-001-knee-surgery"),
         "thread_id": state.get("thread_id"),
         "status": state.get("status"),
         "pending_approvals": state.get("pending_approvals", []),

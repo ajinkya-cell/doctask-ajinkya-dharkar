@@ -1,21 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Navbar, type PageRoute } from './components/Navbar';
+import { TalentLandingHomePage } from './pages/TalentLandingHomePage';
+import { ResumeScreenerHubPage } from './pages/ResumeScreenerHubPage';
 import { ExplainerPage } from './pages/ExplainerPage';
-import { DAOHubPage } from './pages/DAOHubPage';
-import { HouseholdHubPage } from './pages/HouseholdHubPage';
 
 export function App() {
-  const [activePage, setActivePage] = useState<PageRoute>('explainer');
-
-  const isDaoPage = activePage === 'dao';
+  const [activePage, setActivePage] = useState<PageRoute>('home');
 
   return (
-    <div className={`min-h-screen flex flex-col transition-colors duration-500 ${
-      isDaoPage 
-        ? 'bg-[#141210] text-[#F5F2EB] selection:bg-amber-500/30' 
-        : 'bg-[#FAF8F5] text-[#121212] selection:bg-[#EFECE6]'
-    } font-sans antialiased`}>
+    <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-stone-900 selection:bg-[#EFECE6] font-sans antialiased">
       
       {/* Floating Rounded Navbar */}
       <Navbar activePage={activePage} onSelectPage={setActivePage} />
@@ -23,9 +17,33 @@ export function App() {
       {/* Main Page Route Views */}
       <main className="flex-1 pb-16">
         <AnimatePresence mode="wait">
-          {activePage === 'explainer' && (
+          {activePage === 'home' && (
             <motion.div
-              key="explainer"
+              key="home"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+            >
+              <TalentLandingHomePage onNavigate={setActivePage} />
+            </motion.div>
+          )}
+
+          {activePage === 'screener' && (
+            <motion.div
+              key="screener"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+            >
+              <ResumeScreenerHubPage />
+            </motion.div>
+          )}
+
+          {activePage === 'architecture' && (
+            <motion.div
+              key="architecture"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -34,38 +52,19 @@ export function App() {
               <ExplainerPage onNavigate={setActivePage} />
             </motion.div>
           )}
-
-          {activePage === 'dao' && (
-            <motion.div
-              key="dao"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25 }}
-            >
-              <DAOHubPage />
-            </motion.div>
-          )}
-
-          {activePage === 'household' && (
-            <motion.div
-              key="household"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25 }}
-            >
-              <HouseholdHubPage />
-            </motion.div>
-          )}
         </AnimatePresence>
       </main>
 
-      {/* Global Footer */}
-      <footer className={`py-6 border-t ${
-        isDaoPage ? 'border-[#2E2823] text-[#8C8178]' : 'border-stone-200 text-stone-500'
-      } text-center text-xs font-mono`}>
-        SUPERDOCS • Domain-Agnostic Multi-Source Document Reconciliation Engine • LangGraph + Neon PostgreSQL + NVIDIA NIM
+      {/* Footer */}
+      <footer className="border-t border-[#E8E4DC] py-6 text-center text-xs text-stone-500 bg-white">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-stone-900 font-bold">SUPERDOCS TALENT AUDITOR</span>
+            <span>·</span>
+            <span>Autonomous Candidate Screening & Audit System</span>
+          </div>
+          <div>Zero Bluffing · Line-Level Citations · 4-Pillar Rubric · FastMCP Machine Interface</div>
+        </div>
       </footer>
 
     </div>

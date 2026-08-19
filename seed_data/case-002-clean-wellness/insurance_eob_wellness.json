@@ -1,0 +1,12 @@
+{
+  "claim_id": "CLM-HORIZON-2026-101",
+  "patient_id": "PAT-DAVID-101",
+  "patient_name": "David Ross",
+  "service_date": "2026-04-10",
+  "provider": "Downtown Primary Care Clinic",
+  "total_billed_charges": 250.0,
+  "insurance_allowed_amount": 100.0,
+  "plan_paid_amount": 100.0,
+  "patient_responsibility_total": 0.0,
+  "claim_status": "PROCESSED_IN_NETWORK_PREVENTATIVE"
+}

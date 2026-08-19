@@ -70,5 +70,6 @@ class IncrementalWatcher:
         return {
             "new_facts": new_facts,
             "updated_conflicts": updated_conflicts,
+            "new_conflicts": updated_conflicts,
             "change_events": change_events
         }
