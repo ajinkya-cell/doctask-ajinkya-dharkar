@@ -9,13 +9,23 @@ export function App() {
   const [activePage, setActivePage] = useState<PageRoute>('home');
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-stone-900 selection:bg-[#EFECE6] font-sans antialiased">
+    <div className="relative min-h-screen flex flex-col bg-[#FAF8F5] text-stone-900 selection:bg-[#EFECE6] font-sans antialiased">
+      {/* Global Subtle Dot Matrix Background on Every Tab */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: 'radial-gradient(#d6d3d1 1.25px, transparent 1.25px)',
+          backgroundSize: '24px 24px',
+        }}
+      />
       
       {/* Floating Rounded Navbar */}
-      <Navbar activePage={activePage} onSelectPage={setActivePage} />
+      <div className="relative z-20">
+        <Navbar activePage={activePage} onSelectPage={setActivePage} />
+      </div>
 
       {/* Main Page Route Views */}
-      <main className="flex-1 pb-16">
+      <main className="relative z-10 flex-1 pb-16">
         <AnimatePresence mode="wait">
           {activePage === 'home' && (
             <motion.div

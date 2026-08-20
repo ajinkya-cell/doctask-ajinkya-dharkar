@@ -50,23 +50,34 @@ This system satisfies all **5 Mandatory Floor Requirements** and **5 Strong Beha
 
 ---
 
-## 3. FastMCP Machine Interface Driver
+## 3. FastMCP Machine Interface & OpenCode Integration
 
-External AI agents or automated scripts can drive the full screening process via Model Context Protocol:
+AI agents (OpenCode, Claude Desktop, Cursor, Antigravity) can drive the entire candidate screening lifecycle over **Model Context Protocol (MCP)** via `app/mcp/server.py`.
 
-```bash
-# Run the autonomous FastMCP screener driver script:
-python scripts/mcp_screener_driver.py
+👉 **For the complete architecture deep dive and function catalog, see [MCP_ARCHITECTURE.md](MCP_ARCHITECTURE.md).**
+
+### 🔌 OpenCode Configuration (`opencode.json`)
+```json
+{
+  "mcpServers": {
+    "superdocs-talent-auditor": {
+      "command": "C:/path/to/superdocs-assignment/.venv/Scripts/python.exe",
+      "args": ["-m", "app.mcp.server"],
+      "cwd": "C:/path/to/superdocs-assignment"
+    }
+  }
+}
 ```
 
-### Available FastMCP Tools (`app/mcp/server.py`):
-- `configure_job_description(title, required_skills, min_experience, nice_to_have)`
-- `upload_candidate_document(filename, raw_text)`
-- `run_screener_audit()`
-- `get_candidate_leaderboard(run_id)`
-- `review_candidate_flags(run_id)`
-- `decide_candidate(candidate_id, action, notes)`
-- `export_shortlist_dossier(run_id)`
+### Available FastMCP Catalog (`app/mcp/server.py`):
+- **13 Tools:** `reset_candidate_pool`, `configure_job_description`, `ingest_resumes_from_directory`, `upload_candidate_pdf`, `upload_candidate_document`, `run_screener_audit`, `get_candidate_leaderboard`, `get_candidate_dossier`, `add_candidate_pointer`, `remove_candidate_pointer`, `compare_candidates`, `decide_candidate`, `export_shortlist_dossier`.
+- **4 Resources:** `talent://active-jd`, `talent://leaderboard`, `talent://security-flags`, `talent://telemetry`.
+- **3 Prompts:** `screen_candidate_pool`, `generate_interview_guide`, `detect_adversarial_attacks`.
+
+```bash
+# Run the autonomous end-to-end FastMCP driver script:
+python scripts/mcp_screener_driver.py
+```
 
 ---
 
@@ -78,3 +89,4 @@ Run the full automated test suite offline without requiring live LLM API keys:
 pytest
 ```
 *Result: 42 passed in ~2.1s*
+
